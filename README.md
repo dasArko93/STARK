@@ -30,7 +30,7 @@
   - **Cloud Mode**: High-speed, serverless inference via **Qwen 3.8 (27b)** deployed on **Google Cloud Run**.
 - **🎨 Carbon Obsidian UI**: Institutional dark-mode dashboard styled with *Reactor Cyan* glowing accents, live telemetry badges, and real-time token streaming.
 - **🐳 Cloud Run Containerization**: Ultra-lightweight Docker container (`python:3.11-slim`) configured for dynamic port binding and zero-cost scale-to-zero compute.
-- **🔄 Automated GitHub CI/CD**: Pushing to `main` or feature branches triggers an automated pipeline deploying the application to Google Cloud Run in Mumbai (`asia-south1`).
+- **🔄 Automated GitHub CI/CD**: Dual-stage workflow — automatic syntax validation on `dev` and automated production deployments on `main` to Google Cloud Run in Mumbai (`asia-south1`).
 
 ---
 
@@ -115,7 +115,7 @@ flowchart LR
 All sensitive credentials remain 100% private and encrypted within GitHub:
 - `GCP_PROJECT_ID`: Target Google Cloud Project ID.
 - `GCP_SA_KEY`: Service account key JSON for `github-deployer`.
-- `GEMINI_API_KEY`: Google AI Studio API key.
+- `GROQ_API_KEY`: API key for high-speed cloud inference.
 - `APP_PASSWORD`: Custom security clearance passcode for the web terminal.
 
 ---
