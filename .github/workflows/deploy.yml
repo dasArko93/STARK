@@ -50,7 +50,7 @@ jobs:
           CLEAN_API_KEY=$(echo -n "${{ secrets.GROQ_API_KEY || secrets.GEMINI_API_KEY }}" | tr -d '[:space:]')
           IMAGE_URI="${{ env.REGION }}-docker.pkg.dev/${CLEAN_PROJECT_ID}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
           
-          TARGET_MODEL="${{ secrets.MODEL || 'llama-3.1-8b-instant' }}"
+          TARGET_MODEL="${{ secrets.MODEL || 'qwen/qwen3.8-27b' }}"
           TARGET_BASE_URL="${{ secrets.BASE_URL || 'https://api.groq.com/openai/v1' }}"
           
           gcloud run deploy ${{ env.SERVICE }} \
