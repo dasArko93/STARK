@@ -50,7 +50,7 @@ jobs:
           CLEAN_API_KEY=$(echo -n "${{ secrets.GEMINI_API_KEY }}" | tr -d '[:space:]')
           IMAGE_URI="${{ env.REGION }}-docker.pkg.dev/${CLEAN_PROJECT_ID}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
           
-          TARGET_MODEL="${{ secrets.MODEL || 'gemini-3.8-flash' }}"
+          TARGET_MODEL="${{ secrets.MODEL || 'gemini-2.0-flash' }}"
           
           gcloud run deploy ${{ env.SERVICE }} \
             --project "$CLEAN_PROJECT_ID" \
