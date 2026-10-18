@@ -82,9 +82,6 @@ Create or configure your local `.env` file:
 BASE_URL=http://localhost:11434/v1
 API_KEY=ollama
 MODEL=qwen2.5:7b
-
-# S.T.A.R.K. Security Gatekeeper Passcode
-APP_PASSWORD=stark_admin_!@#
 ```
 
 ### 4. Running Locally
