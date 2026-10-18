@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-      - feature/ST_hosting
+      - dev
   workflow_dispatch:
 
 env:
@@ -13,8 +13,36 @@ env:
   SERVICE: stark-app
 
 jobs:
+  # Job 1: Runs on all branches (dev & main) to validate code syntax & dependencies
+  validate:
+    name: 🧪 Validate Code & Dockerfile
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate Python Syntax
+        run: |
+          python -m py_compile app.py src/ollama_manager.py src/stark_kernel.py
+          echo "✅ All Python files compiled successfully without syntax errors."
+
+      - name: Check Dependencies & Dockerfile
+        run: |
+          test -f requirements.txt && echo "✅ requirements.txt present."
+          test -f Dockerfile && echo "✅ Dockerfile present."
+          test -f .dockerignore && echo "✅ .dockerignore present."
+
+  # Job 2: Deploys ONLY on pushes to main (or manual 1-click trigger)
   deploy:
-    name: Build & Deploy S.T.A.R.K. Kernel
+    name: 🚀 Build & Deploy to Cloud Run (Mumbai)
+    needs: validate
+    if: github.ref == 'refs/heads/main' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
 
     steps:
