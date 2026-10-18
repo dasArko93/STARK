@@ -27,7 +27,7 @@
 - **🔒 Security Clearance Gatekeeper**: Terminal access restricted by an encrypted Level 4 security passcode (`APP_PASSWORD`). Unauthorized visitors cannot view telemetry or query LLM endpoints.
 - **⚡ Dual Runtime Engine**:
   - **Local Mode**: Autonomous local lifecycle management with **Ollama** and **Qwen 2.5 (7B)**.
-  - **Cloud Mode**: High-speed, serverless inference via **Google Gemini (2.5 Flash)** deployed on **Google Cloud Run**.
+  - **Cloud Mode**: High-speed, serverless inference via **Qwen 3.8 (27b)** deployed on **Google Cloud Run**.
 - **🎨 Carbon Obsidian UI**: Institutional dark-mode dashboard styled with *Reactor Cyan* glowing accents, live telemetry badges, and real-time token streaming.
 - **🐳 Cloud Run Containerization**: Ultra-lightweight Docker container (`python:3.11-slim`) configured for dynamic port binding and zero-cost scale-to-zero compute.
 - **🔄 Automated GitHub CI/CD**: Pushing to `main` or feature branches triggers an automated pipeline deploying the application to Google Cloud Run in Mumbai (`asia-south1`).
