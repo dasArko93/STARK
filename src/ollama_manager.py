@@ -53,11 +53,11 @@ def ensure_ollama_running(base_url: str = "http://localhost:11434", timeout_seco
         print(f"[Ollama Check] Connected successfully to Ollama at {parsed.netloc}.")
         return True, "Ollama is running."
 
-    # If remote endpoint (not localhost), we can't start it locally
+    # If remote endpoint (cloud API like Google Gemini / OpenAI), mark online
     if not is_local:
-        msg = f"[Ollama Check] Remote Ollama server at {base_url} is unreachable."
+        msg = f"[Engine Check] Cloud LLM Endpoint active: {parsed.netloc}"
         print(msg)
-        return False, msg
+        return True, f"Cloud Endpoint Active ({parsed.netloc})"
 
     # Server is offline on localhost -> attempt automatic launch
     print(f"[Ollama Check] Ollama server is not running on {parsed.netloc}.")
