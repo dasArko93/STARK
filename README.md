@@ -111,13 +111,6 @@ flowchart LR
     E --> F["Live S.T.A.R.K. HTTPS Terminal"]
 ```
 
-### Cloud Environment Secrets (GitHub Encrypted Secrets):
-All sensitive credentials remain 100% private and encrypted within GitHub:
-- `GCP_PROJECT_ID`: Target Google Cloud Project ID.
-- `GCP_SA_KEY`: Service account key JSON for `github-deployer`.
-- `GROQ_API_KEY`: API key for high-speed cloud inference.
-- `APP_PASSWORD`: Custom security clearance passcode for the web terminal.
-
 ---
 
 ## 🧮 Core Capabilities & Ratio Suite
