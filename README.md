@@ -5,28 +5,32 @@
 </p>
 
 <p align="center">
-  <strong>An advanced quantitative financial research engine & telemetry dashboard for fundamental stock analytics, mathematical ratio verification, and financial data synthesis.</strong>
+  <strong>An advanced quantitative financial research engine & telemetry dashboard for fundamental stock analytics, mathematical ratio verification, and automated cloud deployments.</strong>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square&logo=python" alt="Python 3.10+">
-  <img src="https://img.shields.io/badge/Ollama-Local%20LLM-purple?style=flat-square" alt="Ollama">
-  <img src="https://img.shields.io/badge/Model-Qwen_2.5_(7B)-cyan?style=flat-square" alt="Qwen 2.5">
-  <img src="https://img.shields.io/badge/Streamlit-UI-red?style=flat-square&logo=streamlit" alt="Streamlit">
-  <img src="https://img.shields.io/badge/Status-Operational-brightgreen?style=flat-square" alt="Operational">
+  <img src="https://img.shields.io/badge/Python-3.11-blue?style=flat-square&logo=python" alt="Python 3.11">
+  <img src="https://img.shields.io/badge/Streamlit-1.35%2B-red?style=flat-square&logo=streamlit" alt="Streamlit">
+  <img src="https://img.shields.io/badge/Docker-Ready-2496ED?style=flat-square&logo=docker" alt="Docker">
+  <img src="https://img.shields.io/badge/GCP-Cloud_Run_(Mumbai)-4285F4?style=flat-square&logo=googlecloud" alt="GCP Cloud Run">
+  <img src="https://img.shields.io/badge/Security-Level_4_Gatekeeper-00F0FF?style=flat-square" alt="Security Clearance">
+  <img src="https://img.shields.io/badge/CI%2FCD-GitHub_Actions-2088FF?style=flat-square&logo=githubactions" alt="CI/CD">
 </p>
 
 ---
 
 ## 📋 Overview
 
-**S.T.A.R.K.** is designed for analysts, quants, and investors who demand high-fidelity, deterministic computations from AI models without cloud dependencies or telemetry leaks. 
+**S.T.A.R.K.** is designed for quantitative analysts, investment researchers, and financial engineers who demand high-fidelity, deterministic computations from AI models with robust privacy controls and automated institutional deployments.
 
-Powered by **Qwen 2.5 (7B)** running locally via **Ollama**, S.T.A.R.K. connects through an OpenAI-compatible interface, offering:
-- **Autonomous Local LLM Lifecycle**: Automatically detects and launches `ollama serve` in the background when running the application.
-- **Provider Agnostic**: Switch seamlessly between local Ollama models and cloud APIs (OpenAI, Groq, etc.) using a simple `.env` config.
-- **Streamlit Institutional Interface**: Styled in *Carbon Obsidian* dark-mode with *Reactor Cyan* accents and real-time streaming tokens.
-- **Dual Runtime**: Run either through a web GUI or via an interactive CLI terminal console.
+### Key Capabilities:
+- **🔒 Security Clearance Gatekeeper**: Terminal access restricted by an encrypted Level 4 security passcode (`APP_PASSWORD`). Unauthorized visitors cannot view telemetry or query LLM endpoints.
+- **⚡ Dual Runtime Engine**:
+  - **Local Mode**: Autonomous local lifecycle management with **Ollama** and **Qwen 2.5 (7B)**.
+  - **Cloud Mode**: High-speed, serverless inference via **Google Gemini (2.5 Flash)** deployed on **Google Cloud Run**.
+- **🎨 Carbon Obsidian UI**: Institutional dark-mode dashboard styled with *Reactor Cyan* glowing accents, live telemetry badges, and real-time token streaming.
+- **🐳 Cloud Run Containerization**: Ultra-lightweight Docker container (`python:3.11-slim`) configured for dynamic port binding and zero-cost scale-to-zero compute.
+- **🔄 Automated GitHub CI/CD**: Pushing to `main` or feature branches triggers an automated pipeline deploying the application to Google Cloud Run in Mumbai (`asia-south1`).
 
 ---
 
@@ -34,25 +38,31 @@ Powered by **Qwen 2.5 (7B)** running locally via **Ollama**, S.T.A.R.K. connects
 
 ```
 STARK/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml          # Automated CI/CD pipeline to Google Cloud Run (Mumbai)
 ├── assets/
 │   └── stark_logo.jpg          # Geometric S-Monogram brand icon
 ├── src/
-│   ├── stark_kernel.py         # Core LLM prompt engine & OpenAI client wrapper
-│   └── ollama_manager.py       # Auto-discovery & background process manager for Ollama
-├── app.py                      # Streamlit Dark UI dashboard
-├── .env                        # Provider & model parameters (BASE_URL, MODEL, API_KEY)
+│   ├── stark_kernel.py         # Core LLM prompt engine & universal OpenAI client wrapper
+│   └── ollama_manager.py       # Hybrid local Ollama manager & cloud endpoint detector
+├── app.py                      # Streamlit UI dashboard with Security Gatekeeper
+├── requirements.txt            # Production Python package manifest
+├── Dockerfile                  # Container definition optimized for Google Cloud Run
+├── .dockerignore               # Build boundary preventing secrets/cache leaks
+├── .env                        # Local configuration (never committed to Git)
 ├── .gitignore                  # Git privacy & cache exclusions
 └── README.md                   # System documentation
 ```
 
 ---
 
-## ⚡ Quickstart
+## ⚡ Local Quickstart
 
 ### 1. Prerequisites
-- **Python 3.10+**
+- **Python 3.10+** (Python 3.11 recommended)
 - **Ollama**: [Download Ollama](https://ollama.com/download)
-- Pull the target model:
+- Pull the target local model:
   ```powershell
   ollama run qwen2.5:7b
   ```
@@ -62,44 +72,62 @@ Clone the repository and install required dependencies:
 ```powershell
 git clone https://github.com/dasArko93/STARK.git
 cd S_T_A_R_K_v1.1.0
-pip install streamlit openai python-dotenv
+pip install -r requirements.txt
 ```
 
 ### 3. Environment Configuration
-Verify or modify `.env` as needed:
+Create or configure your local `.env` file:
 ```env
+# Local Ollama endpoint
 BASE_URL=http://localhost:11434/v1
 API_KEY=ollama
 MODEL=qwen2.5:7b
+
+# S.T.A.R.K. Security Gatekeeper Passcode
+APP_PASSWORD=stark_admin_!@#
 ```
 
----
-
-## 🚀 Usage
-
-### 🖥️ Streamlit Web Dashboard (Recommended)
+### 4. Running Locally
 Launch the interactive web UI:
 ```powershell
 streamlit run app.py
 ```
-> *S.T.A.R.K. automatically verifies local Ollama connectivity and launches the background server if it's currently offline.*
-
-### ⌨️ Terminal Interactive Console (CLI)
-For a lightweight terminal-only session:
-```powershell
-python src/stark_kernel.py
-```
+1. Enter your security passcode at the **S.T.A.R.K. Security Clearance** prompt.
+2. Once unlocked, the full quantitative telemetry dashboard is available.
 
 ---
 
-## 🧮 Core Capabilities
+## ☁️ Cloud Architecture & CI/CD Deployment
+
+S.T.A.R.K. is engineered for continuous deployment to **Google Cloud Run (Mumbai / `asia-south1`)** via **GitHub Actions**.
+
+### Automated Deployment Pipeline:
+```mermaid
+flowchart LR
+    A["git push"] --> B["GitHub Actions CI/CD"]
+    B --> C["GCP Service Account Auth"]
+    C --> D["Docker Build & Push\n(Artifact Registry Mumbai)"]
+    D --> E["Cloud Run Deploy\n(asia-south1)"]
+    E --> F["Live S.T.A.R.K. HTTPS Terminal"]
+```
+
+### Cloud Environment Secrets (GitHub Encrypted Secrets):
+All sensitive credentials remain 100% private and encrypted within GitHub:
+- `GCP_PROJECT_ID`: Target Google Cloud Project ID.
+- `GCP_SA_KEY`: Service account key JSON for `github-deployer`.
+- `GEMINI_API_KEY`: Google AI Studio API key.
+- `APP_PASSWORD`: Custom security clearance passcode for the web terminal.
+
+---
+
+## 🧮 Core Capabilities & Ratio Suite
 
 | Category | Supported Metrics & Analytics |
 | :--- | :--- |
 | **Valuation** | P/E Ratio, P/B Ratio, EV/EBITDA, Discounted Cash Flow (DCF) |
-| **Solvency & Health** | Debt-to-Equity, Current Ratio, Quick Ratio |
+| **Solvency & Health** | Debt-to-Equity, Current Ratio, Quick Ratio, Interest Coverage |
 | **Profitability** | Return on Equity (ROE), Return on Invested Capital (ROIC), Gross & Operating Margins |
-| **Growth Analytics** | Compound Annual Growth Rate (CAGR), YoY / QoQ telemetry |
+| **Growth Analytics** | Compound Annual Growth Rate (CAGR), YoY / QoQ Revenue & Earnings Telemetry |
 
 ---
 
