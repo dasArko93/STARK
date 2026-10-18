@@ -50,6 +50,8 @@ jobs:
           CLEAN_API_KEY=$(echo -n "${{ secrets.GEMINI_API_KEY }}" | tr -d '[:space:]')
           IMAGE_URI="${{ env.REGION }}-docker.pkg.dev/${CLEAN_PROJECT_ID}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
           
+          TARGET_MODEL="${{ secrets.MODEL || 'gemini-3.8-flash' }}"
+          
           gcloud run deploy ${{ env.SERVICE }} \
             --project "$CLEAN_PROJECT_ID" \
             --image "$IMAGE_URI" \
@@ -61,7 +63,7 @@ jobs:
             --cpu 1 \
             --min-instances 0 \
             --max-instances 2 \
-            --set-env-vars "BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/,API_KEY=${CLEAN_API_KEY},MODEL=gemini-2.5-flash,APP_PASSWORD=${{ secrets.APP_PASSWORD }}"
+            --set-env-vars "BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/,API_KEY=${CLEAN_API_KEY},MODEL=${TARGET_MODEL},APP_PASSWORD=${{ secrets.APP_PASSWORD }}"
 
       - name: 7. Output Live Service URL
         run: |
