@@ -47,10 +47,11 @@ jobs:
       - name: 6. Deploy to Google Cloud Run (Mumbai)
         run: |
           CLEAN_PROJECT_ID=$(echo -n "${{ secrets.GCP_PROJECT_ID }}" | tr -d '[:space:]')
-          CLEAN_API_KEY=$(echo -n "${{ secrets.GEMINI_API_KEY }}" | tr -d '[:space:]')
+          CLEAN_API_KEY=$(echo -n "${{ secrets.GROQ_API_KEY || secrets.GEMINI_API_KEY }}" | tr -d '[:space:]')
           IMAGE_URI="${{ env.REGION }}-docker.pkg.dev/${CLEAN_PROJECT_ID}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
           
-          TARGET_MODEL="${{ secrets.MODEL || 'gemini-2.0-flash' }}"
+          TARGET_MODEL="${{ secrets.MODEL || 'llama-3.3-70b-versatile' }}"
+          TARGET_BASE_URL="${{ secrets.BASE_URL || 'https://api.groq.com/openai/v1' }}"
           
           gcloud run deploy ${{ env.SERVICE }} \
             --project "$CLEAN_PROJECT_ID" \
@@ -63,7 +64,7 @@ jobs:
             --cpu 1 \
             --min-instances 0 \
             --max-instances 2 \
-            --set-env-vars "BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/,API_KEY=${CLEAN_API_KEY},MODEL=${TARGET_MODEL},APP_PASSWORD=${{ secrets.APP_PASSWORD }}"
+            --set-env-vars "BASE_URL=${TARGET_BASE_URL},API_KEY=${CLEAN_API_KEY},MODEL=${TARGET_MODEL},APP_PASSWORD=${{ secrets.APP_PASSWORD }}"
 
       - name: 7. Output Live Service URL
         run: |
