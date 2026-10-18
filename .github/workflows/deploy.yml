@@ -1,0 +1,68 @@
+name: S.T.A.R.K. CI/CD Pipeline - Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+      - feature/ST_hosting
+  workflow_dispatch:
+
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  REGION: asia-south1
+  REPOSITORY: stark-repo
+  SERVICE: stark-app
+
+jobs:
+  deploy:
+    name: Build & Deploy S.T.A.R.K. Kernel
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout Codebase
+        uses: actions/checkout@v4
+
+      - name: 2. Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: 3. Set Up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: 4. Configure Docker for Artifact Registry
+        run: |
+          gcloud auth configure-docker ${{ env.REGION }}-docker.pkg.dev --quiet
+
+      - name: 5. Build and Tag Container
+        run: |
+          IMAGE_URI="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
+          LATEST_URI="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:latest"
+          
+          docker build -t "$IMAGE_URI" -t "$LATEST_URI" .
+          docker push "$IMAGE_URI"
+          docker push "$LATEST_URI"
+
+      - name: 6. Deploy to Google Cloud Run (Mumbai)
+        run: |
+          IMAGE_URI="${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}"
+          
+          gcloud run deploy ${{ env.SERVICE }} \
+            --image "$IMAGE_URI" \
+            --region ${{ env.REGION }} \
+            --platform managed \
+            --allow-unauthenticated \
+            --port 8080 \
+            --memory 512Mi \
+            --cpu 1 \
+            --min-instances 0 \
+            --max-instances 2 \
+            --set-env-vars "BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/,API_KEY=${{ secrets.GEMINI_API_KEY }},MODEL=gemini-2.5-flash,APP_PASSWORD=${{ secrets.APP_PASSWORD }}"
+
+      - name: 7. Output Live Service URL
+        run: |
+          SERVICE_URL=$(gcloud run services describe ${{ env.SERVICE }} --region ${{ env.REGION }} --format 'value(status.url)')
+          echo "=========================================================="
+          echo "🚀 S.T.A.R.K. IS LIVE IN MUMBAI (asia-south1):"
+          echo "$SERVICE_URL"
+          echo "=========================================================="
